@@ -20,7 +20,17 @@ module.exports = {
 	},
 	devServer: {
 		historyApiFallback: true,
-		port: 8080
+		port: 8080,
+		proxy: {
+			"/api": {
+				target: "http://localhost:3000",
+				secure: false,
+				"pathRewrite": {
+					"^/api" : ""
+        		},
+				"changeOrigin": true
+			}
+		}
 	},
 	plugins: [
 		new htmlWebPackPlugin({
@@ -35,9 +45,6 @@ module.exports = {
 				exclude: /node_modules/,
 				use: {
 					loader: "babel-loader",
-					options: {
-						presets: ["@babel/preset-env","@babel/preset-react"]
-					}
 				}
 			},
 			{
